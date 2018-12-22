@@ -129,9 +129,12 @@
   </section>
 </template>
 <script>
-  import Shoplist from '../../components/Shoplist/Shoplist'
   import {mapState} from 'vuex'
+  import Shoplist from '../../components/Shoplist/Shoplist'
   export default {
+    mounted (){
+      this.$store.dispatch('getShops')
+    },
     computed:{
       ...mapState(['address'])
     },
