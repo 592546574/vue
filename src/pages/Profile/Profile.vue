@@ -2,7 +2,7 @@
   <section class="profile">
     <NavHeader title="我的"></NavHeader>
     <section class="profile-number">
-      <a href="javascript:" class="profile-link">
+      <a href="javascript:;" class="profile-link" @click="$router.push('/login')">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
