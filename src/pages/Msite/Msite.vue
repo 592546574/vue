@@ -11,70 +11,21 @@
    </NavHeader>
     <!--首页导航-->
     <nav class="msite_nav">
-      <div class="swiper-container">
+      <div class="swiper-container" v-if="categorys.length>0">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key="index">
             <a href="javascript:" class="link_to_food" v-for="(c,index) in categorys" :key="index">
               <div class="food_container">
                 <img :src="'https://fuss10.elemecdn.com'+ c.image_url">
               </div>
-              <span>甜品饮品</span>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
+              <span>{{c.title}}</span>
             </a>
           </div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
+      <img src="./images/msite_back.svg" alt="loading" v-else>
     </nav>
     <!--首页附近商家-->
     <div class="msite_shop_list">
@@ -110,16 +61,17 @@
         //遍历总数组
         categorys.forEach(c =>{
           //将小数组保存到大数组中
-          if (smallArr.length === 0){
+          if (smallArr.length===0){
             bigArr.push(smallArr)
-            //将每一张c图片保存到小数组中smallArr
-            smallArr.push(c)
-            //如果一个小数组满8张在创建一个新数组存放图片
-            if (smallArr.length === 8){
-              smallArr = []
-            }
+          }
+          //将每一张c图片保存到小数组中smallArr
+          smallArr.push(c)
+          //如果一个小数组满8张在创建一个新数组存放图片
+          if (smallArr.length===8){
+            smallArr = []
           }
         })
+        return bigArr
       }
     },
     watch:{
