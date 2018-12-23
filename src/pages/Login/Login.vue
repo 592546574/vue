@@ -13,7 +13,10 @@
           <div :class="{on:loginWar}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button disabled="disabled" class="get_verification" :class="{right_phone_number:isRightPhone}">获取验证码</button>
+              <button :disabled="!isRightPhone || computeTime>0" class="get_verification"
+                      :class="{right_phone_number:isRightPhone}" @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -57,12 +60,27 @@
     data(){
       return{
         loginWar:true,  //true代表短信登陆.false代表密码登陆
-        phone:'' //手机号
+        phone:'',//手机号
+        computeTime:0   //验证码得时间
       }
     },
     computed:{
       isRightPhone(){
         return /^1\d{10}$/.test(this.phone)
+      }
+    },
+    methods:{
+      sendCode(){
+        //显示最大得计算时间
+        this.computeTime = 30
+        //启动循环定时器
+        const intervalId = setInterval(() =>{
+          this.computeTime--
+          if (this.computeTime<=0){
+            //停止倒计时
+            clearInterval(intervalId)
+          }
+        },1000)
       }
     }
   }
