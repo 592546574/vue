@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import {reqSendCode,reqLoginSms,reqLoginPwd} from '../../api'
+import { Toast,MessageBox} from 'mint-ui';
   export default {
     data(){
       return{
@@ -71,22 +73,38 @@
       }
     },
     methods:{
-      sendCode(){
+      //发送短信验证
+      async sendCode(){
         //显示最大得计算时间
         this.computeTime = 30
         //启动循环定时器
         const intervalId = setInterval(() =>{
           this.computeTime--
           if (this.computeTime<=0){
+            this.computeTime = 0
             //停止倒计时
             clearInterval(intervalId)
           }
         },1000)
+        //发送Ajax请求
+        const result = await reqSendCode(this.phone)
+        if (result.code === 0){
+          //验证码短信发送成功
+          Toast('短信发送成功')
+        }else {
+          //停止计时
+          this.computeTime = 0
+          //验证码发送失败
+          MessageBox.alert(result.msg);
+        }
       },
-      //更新显示图形验证码
       updateCaptcha(){
         //给img指定src携带时间戳参数Date.now
         this.$refs.captcha.src = 'http://localhost:5000/captcha?time='+Date.now()
+      },
+      //请求登陆
+      login(){
+        //进行前台表单验证
       }
     }
   }
