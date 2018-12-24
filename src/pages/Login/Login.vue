@@ -40,7 +40,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img ref="captcha" class="get_verification" src="http://localhost:5000/captcha" alt="captcha" @click.prevent="updateCaptcha">
               </section>
             </section>
           </div>
@@ -82,6 +82,11 @@
             clearInterval(intervalId)
           }
         },1000)
+      },
+      //更新显示图形验证码
+      updateCaptcha(){
+        //给img指定src携带时间戳参数Date.now
+        this.$refs.captcha.src = 'http://localhost:5000/captcha?time='+Date.now()
       }
     }
   }
