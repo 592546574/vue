@@ -3,13 +3,15 @@ import {
   reqAddress,
   reqCategorys,
   reqShops,
-  reqUserInfo
+  reqUserInfo,
+  reqLogout
 } from '../api'
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORY,
   RECEIVE_SHOPS,
-  RECEIVE_USER
+  RECEIVE_USER,
+  RESET_USER
 } from './mutaition-types'
 export default {
   //获取异步位置地址信息
@@ -48,12 +50,20 @@ export default {
     commit(RECEIVE_USER,{user})
   },
   //异步获取当前用户信息
- async  getUser({commit}){
+ async getUser({commit}){
     const result = await reqUserInfo()
    if (result.code === 0){
      const user = result.data
      //提交
      commit(RECEIVE_USER,{user})
    }
+ },
+  //异步退出登陆
+ async logout({commit}){
+    const result = await reqLogout()
+   if (result.code === 0){
+     commit(RESET_USER)
+   }
  }
+
 }
