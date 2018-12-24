@@ -2,7 +2,8 @@
 import {
   reqAddress,
   reqCategorys,
-  reqShops
+  reqShops,
+  reqUserInfo
 } from '../api'
 import {
   RECEIVE_ADDRESS,
@@ -45,5 +46,14 @@ export default {
   //保存user信息
   saveUser({commit},user){
     commit(RECEIVE_USER,{user})
-  }
+  },
+  //异步获取当前用户信息
+ async  getUser({commit}){
+    const result = await reqUserInfo()
+   if (result.code === 0){
+     const user = result.data
+     //提交
+     commit(RECEIVE_USER,{user})
+   }
+ }
 }
