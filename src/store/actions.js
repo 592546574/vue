@@ -7,7 +7,8 @@ import {
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORY,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER
 } from './mutaition-types'
 export default {
   //获取异步位置地址信息
@@ -40,5 +41,9 @@ export default {
       const shops = result.data
       commit(RECEIVE_SHOPS,{shops})
     }
+  },
+  //保存user信息
+  saveUser({commit},user){
+    commit(RECEIVE_USER,{user})
   }
 }
