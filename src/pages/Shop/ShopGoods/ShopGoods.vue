@@ -50,8 +50,7 @@
      mounted(){
        this.$store.dispatch('getGoods',() =>{
         this.$nextTick(() =>{
-          new BScroll('.menu-wrapper')
-          new BScroll('.foods-wrapper')
+          this._initScroll()
         })
        })
      },
@@ -59,6 +58,17 @@
       ...mapState({
         goods:state => state.shop.goods
       })
+    },
+    methods:{
+       _initScroll(){
+         new BScroll('.menu-wrapper',{
+
+         })
+         new BScroll('.foods-wrapper',{
+
+         })
+
+       }
     }
   }
 </script>
