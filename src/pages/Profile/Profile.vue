@@ -106,7 +106,9 @@
  // import MtButton from '../../../node_modules/mint-ui/packages/button/src/button'
   export default {
     computed:{
-      ...mapState(['user'])
+      ...mapState({
+        user:state => state.user.user
+      })
     },
     methods:{
       logout(){

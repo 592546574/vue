@@ -50,7 +50,10 @@
       this.$store.dispatch('getCategorys')
     },
     computed:{
-      ...mapState(['address','categorys']),
+      ...mapState({//['address','categorys']
+        address:state =>state.msite.address,
+        categorys:state =>state.msite.categorys
+      }),
       //一维数组转换二维
       categorysArr(){
         const {categorys} = this
