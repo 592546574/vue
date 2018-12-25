@@ -3,10 +3,11 @@
     <!--首页头部-->
    <NavHeader :title="address.name || '正在定位中'">
       <span class="header_search" slot="left">
-        <i class="iconfont icon-sousuo"></i>
+        <i class="iconfont icon-sousuo" @click="$router.push('/search')"></i>
       </span>
      <span class="header_login" slot="right">
-       <span class="header_login_text">登录|注册</span>
+       <span class="header_login_text" v-if="!user._id" @click="$router.push('/login')">登录|注册</span>
+       <i class="iconfont icon-person" v-else @click="$router.push('/userinfo')"></i>
      </span>
    </NavHeader>
     <!--首页导航-->
@@ -52,7 +53,8 @@
     computed:{
       ...mapState({//['address','categorys']
         address:state =>state.msite.address,
-        categorys:state =>state.msite.categorys
+        categorys:state =>state.msite.categorys,
+        user:state => state.user.user
       }),
       //一维数组转换二维
       categorysArr(){
