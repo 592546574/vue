@@ -26,11 +26,12 @@ const geterts = {
 }
 const actions = {
   //保存商家商品信息
-  async getGoods({commit}){
+  async getGoods({commit},cb){
     const result = await reqGoods()
     if (result.code === 0) {
       const goods = result.data
       commit(RECEIVE_GOODS,{goods})
+      typeof cb==='function' && cb()
     }
   },
    //保存评价列表

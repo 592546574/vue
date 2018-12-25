@@ -1,58 +1,34 @@
 <template>
   <div>
     <div class="goods">
-      <div class="menu-wrapper">
+       <div class="menu-wrapper">
         <ul>
           <li class="menu-item" v-for="(good,index) in goods" :key="index">
-            <img class="icon" :src="good.icon" v-if="good.icon">
-            <span class="text bottom-border-1px">{{good.name}}</span>
+            <span class="text bottom-border-1px">
+              <img class="icon" :src="good.icon" v-if="good.icon">
+              {{good.name}}
+            </span>
           </li>
         </ul>
       </div>
-
       <div class="foods-wrapper">
         <ul>
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(foods,index) in good.foods" :key="index">
+              <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="index">
                 <div class="icon">
-                  <img width="57" height="57" :src="foods.icon">
+                  <img width="57" height="57" :src="food.icon">
                 </div>
                 <div class="content">
-                  <h2 class="name">{{foods.name}}</h2>
-                  <p class="desc">{{foods.name}}</p>
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
                   <div class="extra">
-                    <span class="count">月售{{foods.sellCount}}份</span>
-                    <span>好评率{{foods.rating}}%</span></div>
+                    <span class="count">月售{{food.sellCount}}份</span>
+                    <span>好评率{{food.rating}}%</span></div>
                   <div class="price">
-                    <span class="now">￥{{foods.price}}</span>
-                    <span class="old" v-if="foods.oldPrice">￥{{foods.oldPrice}}</span>
-                  </div>
-                  <div class="cartcontrol-wrapper">
-                    CartControl组件
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="food-list food-list-hook">
-            <h1 class="title">香浓甜粥</h1>
-            <ul>
-              <li class="food-item bottom-border-1px">
-                <div class="icon">
-                  <img width="57" height="57" src="http://fuss10.elemecdn.com/6/72/cb844f0bb60c502c6d5c05e0bddf5jpeg.jpeg?imageView2/1/w/114/h/114">
-                </div>
-                <div class="content">
-                  <h2 class="name">红枣山药粥</h2>
-                  <p class="desc">红枣山药糙米粥,素材包</p>
-                  <div class="extra">
-                    <span class="count">月售17份</span>
-                    <span>好评率100%</span>
-                  </div>
-                  <div class="price">
-                    <span class="now">￥29</span>
-                    <span class="old">￥36</span>
+                    <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
                     CartControl组件
@@ -68,10 +44,16 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
   export default {
      mounted(){
-       this.$store.dispatch('getGoods')
+       this.$store.dispatch('getGoods',() =>{
+        this.$nextTick(() =>{
+          new BScroll('.menu-wrapper')
+          new BScroll('.foods-wrapper')
+        })
+       })
      },
     computed:{
       ...mapState({
@@ -86,7 +68,7 @@
   .goods
     display: flex
     position: absolute
-    top: 275px
+    top: 225px
     bottom: 46px
     width: 100%
     background: #fff;
