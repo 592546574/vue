@@ -6,12 +6,14 @@ import getters from './geterts'
 //引入modules
 import msite from './modules/msite'
 import user from './modules/user'
+import shop from './modules/shop'
 //声明使用
 Vue.use(Vuex)
 export default new Vuex.Store({
   modules:{
     msite,
-    user
+    user,
+    shop
   },
   getters,
   actions

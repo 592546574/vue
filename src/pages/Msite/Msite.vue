@@ -52,8 +52,8 @@
     },
     computed:{
       ...mapState({//['address','categorys']
-        address:state =>state.msite.address,
-        categorys:state =>state.msite.categorys,
+        address:state => state.msite.address,
+        categorys:state => state.msite.categorys,
         user:state => state.user.user
       }),
       //一维数组转换二维

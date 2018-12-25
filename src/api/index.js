@@ -18,3 +18,9 @@ export const reqLoginSms = ({phone,code}) =>ajax(BASE + '/login_sms',{phone,code
 export const reqUserInfo = () =>ajax(BASE + '/userinfo')
 //[10、用户登出](#10用户登出)<br/>
 export const reqLogout = () =>ajax(BASE + '/logout')
+//获取商家点餐列表
+export const reqGoods = () =>ajax('/goods')
+//获取商家评价列表
+export const reqRatings = () => ajax('/ratings')
+//获取信息列表
+export const reqInfo = () =>ajax('/info')
