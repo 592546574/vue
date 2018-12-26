@@ -3,7 +3,8 @@
     <div class="goods">
        <div class="menu-wrapper">
         <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:currentIndex === index}" >
+          <li class="menu-item" v-for="(good,index) in goods" :key="index"
+              :class="{current:currentIndex === index}" @click="clickItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -11,6 +12,7 @@
           </li>
         </ul>
       </div>
+
       <div class="foods-wrapper">
         <!--//ref原生dom里标识某一个标签-->
         <ul ref="goodUl">
@@ -83,16 +85,16 @@
          new BScroll('.menu-wrapper',{
           click:true
          })
-         const rightScroll = new BScroll('.foods-wrapper',{
+         this.rightScroll = new BScroll('.foods-wrapper',{
            click:true,
            probeType:3
          })
            //监视右侧列表得滑动
-         rightScroll.on('scroll',({x,y}) =>{
+         this.rightScroll.on('scroll',({x,y}) =>{
            this.scrollY = Math.abs(y)
          })
          //滑动结束scrollEnd
-         rightScroll.on('scrollEnd',({x,y}) =>{
+         this.rightScroll.on('scrollEnd',({x,y}) =>{
            this.scrollY = Math.abs(y)
          })
 
@@ -109,7 +111,16 @@
          })
          //更新状态
          this.tops = tops
-       }
+       },
+      //先绑定监听点击z左侧某个分别项
+      clickItem(index){
+         //得到目标位置得坐标
+         const y = -this.tops[index]
+        //立即更新
+        this.scrollY = -y
+         //让右侧列表滑动到相应得位置
+        this.rightScroll .scrollTo(0,y,300)
+      }
     }
   }
 </script>
