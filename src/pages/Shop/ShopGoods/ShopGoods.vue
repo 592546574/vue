@@ -2,7 +2,7 @@
   <div>
     <div class="goods">
        <div class="menu-wrapper">
-        <ul>
+        <ul ref="leftUl">
           <li class="menu-item" v-for="(good,index) in goods" :key="index"
               :class="{current:currentIndex === index}" @click="clickItem(index)">
             <span class="text bottom-border-1px">
@@ -74,17 +74,29 @@
       //获取currentIndex当前分类得下标
       currentIndex(){
         const {scrollY,tops} = this
-        return tops.findIndex((top,index) =>{
+        //创建新的index
+        const index = tops.findIndex((top,index) =>{
           //取余scrollY在[top, nextTop)区间范围内
           return scrollY >= top && scrollY<tops[index+1]
         })
+        //在保存之前判断index是否相等如果不相等就产生了新的index
+        if (index!=this.index && this.leftScroll) {
+          //保存新的index
+          this.index = index
+          //当current发生改变时将左侧列表进行编码滑动（首先先得到左侧编码）
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li,300)
+        }
+        return index
       }
     },
     methods:{
        _initScroll(){
-         new BScroll('.menu-wrapper',{
+         //左侧编码
+         this.leftScroll = new BScroll('.menu-wrapper',{
           click:true
          })
+         //右侧编码
          this.rightScroll = new BScroll('.foods-wrapper',{
            click:true,
            probeType:3
