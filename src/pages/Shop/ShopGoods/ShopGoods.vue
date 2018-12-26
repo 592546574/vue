@@ -3,7 +3,7 @@
     <div class="goods">
        <div class="menu-wrapper">
         <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="index">
+          <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{current:currentIndex === index}" >
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -12,7 +12,8 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <!--//ref原生dom里标识某一个标签-->
+        <ul ref="goodUl">
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -47,27 +48,67 @@
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
   export default {
+    data(){
+      return{
+        //定义右侧列表滑动得Y坐标
+        scrollY:0,
+        //右侧所有分类li得tops值
+        tops:[3,5,7]
+      }
+    },
      mounted(){
        this.$store.dispatch('getGoods',() =>{
         this.$nextTick(() =>{
           this._initScroll()
+          //列表显示初始化状态
+         this._initTops()
         })
        })
      },
     computed:{
       ...mapState({
         goods:state => state.shop.goods
-      })
+      }),
+      //获取currentIndex当前分类得下标
+      currentIndex(){
+        const {scrollY,tops} = this
+        return tops.findIndex((top,index) =>{
+          //取余scrollY在[top, nextTop)区间范围内
+          return scrollY >= top && scrollY<tops[index+1]
+        })
+      }
     },
     methods:{
        _initScroll(){
          new BScroll('.menu-wrapper',{
           click:true
          })
-         new BScroll('.foods-wrapper',{
-           click:true
+         const rightScroll = new BScroll('.foods-wrapper',{
+           click:true,
+           probeType:3
+         })
+           //监视右侧列表得滑动
+         rightScroll.on('scroll',({x,y}) =>{
+           this.scrollY = Math.abs(y)
+         })
+         //滑动结束scrollEnd
+         rightScroll.on('scrollEnd',({x,y}) =>{
+           this.scrollY = Math.abs(y)
          })
 
+       },
+      //获取右侧所有li得top值
+       _initTops(){
+         const tops = []
+         let top = 0
+         tops.push(top)
+         const lis = this.$refs.goodUl.children    //children获取当前元素得子标签
+         Array.prototype.slice.call(lis).forEach(li =>{
+           top += li.clientHeight
+           tops.push(top)
+         })
+         //更新状态
+         this.tops = tops
        }
     }
   }
