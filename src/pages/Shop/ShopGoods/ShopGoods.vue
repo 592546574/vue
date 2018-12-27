@@ -16,7 +16,7 @@
       <div class="foods-wrapper">
         <!--//ref原生dom里标识某一个标签-->
         <ul ref="goodUl">
-          <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
+          <li class="food-list-hook" v-for="(good,index) in goods" :key="index" @click="showFood(food)">
             <h1 class="title">{{good.name}}</h1>
             <ul>
               <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="index">
@@ -43,19 +43,23 @@
         </ul>
       </div>
     </div>
+    <!--标签对象就是组件对象-->
+    <Food ref="food" :food="food"/>
   </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  import Food from '../../../components/Food/Food'
   export default {
     data(){
       return{
         //定义右侧列表滑动得Y坐标
         scrollY:0,
         //右侧所有分类li得tops值
-        tops:[3,5,7]
+        tops:[3,5,7],
+        food:{}   //需要显示得food
       }
     },
      mounted(){
@@ -132,7 +136,17 @@
         this.scrollY = -y
          //让右侧列表滑动到相应得位置
         this.rightScroll .scrollTo(0,y,300)
+      },
+      //显示指定得food
+      showFood(food){
+         //更新food状态
+         this.food = food
+        //显示food组件
+        this.$refs.food.toggleShow()
       }
+    },
+    components:{
+      Food
     }
   }
 </script>
